@@ -1,0 +1,70 @@
+
+Callback Functions
+
+A callback function is a function that is passed as an argument to another function, to be “called back” at a later time. 
+
+A function that accepts other functions as arguments is called a higher-order function, which contains the logic for when the callback function gets executed. It’s the combination of these two that allow us to extend our functionality.
+
+------------------
+A callback is simply a method designated to handle the response once it gets back to your method.
+
+Since javascript methods are first class objects, you can pass them around like variables and like objects and attach them to all sorts of events. When events trigger, the methods attached to those events are called.
+
+If you couldn't assign callbacks or pass methods as parameters, you'd have to write the error handling code over and over again, but instead all you have to do is just assign it as a callback and all your error handling will be sorted in one go.
+
+------------------
+Why use Callback functions?
+
+Most of the time we are creating programs and applications that operate in a synchronous manner. In other words, some of our operations are started only after the preceding ones have completed. 
+
+Often when we request data from other sources, such as an external API, we don’t always know when our data will be served back. 
+
+In these instances we want to wait for the response, but we don’t always want our entire application grinding to a halt while our data is being fetched. These situations are where callback functions come in handy.
+
+------------------
+The main browser process is a single threaded event loop. If you execute a long-running operation within a single-threaded event loop, the process "blocks”. 
+
+This is bad because the process stops processing other events while waiting for your operation to complete. 'alert' is one of the few blocking browser methods: if you call alert('test'), you can no longer click links, perform ajax queries, or interact with the browser UI.
+
+In order to prevent blocking on long-running operations, the XMLHttpRequest provides an asynchronous interface. You pass it a callback to run after the operation is complete, and while it is processing it cedes control back to the main event loop instead of blocking.
+
+Event Loop Video: https://www.youtube.com/watch?v=8aGhZQkoFbQ&list=PL8AhW8Fjt2GwuvJtFkleGaBEgxKUSSvkd&ab_channel=JSConf
+Try it live at: http://latentflip.com/loupe/
+
+------------------
+
+There's no reason to use a callback unless you want to bind something to an event handler, or your operation is potentially blocking and therefore requires an asynchronous programming interface.
+
+------------------
+It's not quite like multithreading...
+
+You use a callback anytime you need to wait on something external to your primary JS code. In a browser this is used a ton for AJAX, and in node.js it's used for every single thing that calls out to the system (file access, networks access, database requests, etc).
+
+The huge advantage here is that, although javascript is single threaded, you never tie up that thread with waiting. If you JS thread is busy, it should only ever be because it's actively running code. So even though JS is single threaded, it's trivial for your code to implicitly hold the state of any number of any kind of asynchronous tasks.
+
+The synchronous method of callbacks are used for a different purpose usually. Like listeners or delegates. Like telling object A to callback when it's data changes. While not strictly asynchronous, you usually aren't calling that callback immediately. Instead it will be called later in response to some sort of user action of event.
+
+The first thing we need to know is that in Javascript, functions are first-class objects. As such, we can work with them in the same way we work with other objects, like assigning them to variables and passing them as arguments into other functions. 
+
+This is important, because it’s the latter technique that allows us to extend functionality in our applications.
+
+----------
+NOT all javascript callbacks are asynchronous
+
+The only way you know whether a callback is asynchronous is from its documentation. Typically, ones involving requests for external resources (ajax calls, for instance) are asynchronous, and others may or may not be.
+
+Callbacks that you call yourself are regular function calls, which are always synchronous.
+
+Certain native APIs (eg, AJAX, geolocation, Node.js disk or network APIs) are asynchronous and will execute their callbacks later in the event loop.
+
+If you call a callback synchronously from within an async callback, it will end up being async too.
+
+setTimeout, fetch, and so on are asynchronous because they rely on external api's. (setTimeout is part of the windowOrGlobalWorker web api, for example, and fetch is a web api in itself.)
+
+setTimeout() is an asynchronous function, meaning that the timer function will not pause execution of other functions in the functions stack. In other words, you cannot use setTimeout() to create a "pause" before the next function in the function stack fires.
+
+If a callback does not rely on an external API, it's synchronous.
+
+Promises are the only native async functionality in JS.
+
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous
